@@ -44,6 +44,7 @@ var changeInteraction = function() {
             // 显示地图上的坐标
             var element = popup.getElement();
             var coordinate = e.mapBrowserEvent.coordinate;
+            console.log('coordinate', coordinate);
 
             // console.log('e.target', e.target);
             // e.target 是一个 ol.interaction.Select 对象
@@ -86,10 +87,6 @@ var changeInteraction = function() {
             // console.log('selectedF geometry getProperties', coordinates);
             // console.log('selectedF geometry getLayout', geometry.getLayout());
 
-            // console.log('e.selected[0].getGeometry().extent_', e.selected[0].getGeometry().extent_);
-            // var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-            //     coordinate, 'EPSG:3857', 'EPSG:4326'));
-
             $(element).popover('destroy');
             popup.setPosition(coordinate);
             // the keys are quoted to prevent renaming in ADVANCED mode.
@@ -101,17 +98,10 @@ var changeInteraction = function() {
             });
             $(element).popover('show');
 
-
-
-            // console.log('featureOverlay.getSource().getFeatures()', featureOverlay.getSource().getFeatures());
-
-
           } else {
-            // console.log('1111111111111');
             var element = popup.getElement();
             $(element).popover('destroy');
           }
-
     });
   }
 };
@@ -122,23 +112,3 @@ var changeInteraction = function() {
  */
 selectElement.onchange = changeInteraction;
 changeInteraction();
-
-
-
-
-// 从另一个地方抄的例子  http://anzhihun.coding.me/ol3-primer/ch09/09-03.html
-
-// var selectSingleClick = new ol.interaction.Select({});
-//  map.addInteraction(selectSingleClick);
-//  // 监听选中事件，然后在事件处理函数中改变被选中的`feature`的样式
-//  selectSingleClick.on('select', function(event){
-//    console.log('11111111111111');
-//     //  event.selected[0].setStyle(new ol.style.Style({
-//     //      image: new ol.style.Circle({
-//     //          radius: 10,
-//     //          fill: new ol.style.Fill({
-//     //              color: 'blue'
-//     //          })
-//     //      })
-//     //  }));
-//  })

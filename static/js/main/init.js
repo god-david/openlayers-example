@@ -28,7 +28,7 @@
         view: new ol.View({
             center: center,
             extent: extent,
-            zoom: 10,
+            zoom: 9.5,
             minZoom:9,
             maxZoom:15
         }),
