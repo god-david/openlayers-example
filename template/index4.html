@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>OpenLayers example ImageStatic source</title>
+    <link rel="stylesheet" href="css/ol.css" type="text/css">
+    <style>
+      .map {
+        height: 800px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>
+      <a href="/1">My Map1</a>
+      <a href="/2">My Map2</a>
+      <a href="/3">My Map3</a>
+    </h2>
+    <form class="form-inline">
+      <label>Geometry type &nbsp;</label>
+      <select id="type">
+        <option value="Point">Point</option>
+        <option value="LineString">LineString</option>
+        <option value="Polygon">Polygon</option>
+        <option value="Circle">Circle</option>
+      </select>
+    </form>
+    <div id="map" class="map"></div>
+    <script src="build/ol-debug.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+    // ********************* 抄的一个例子 好用 start ***********************
+    // 地图设置中心，设置到成都，在本地离线地图 offlineMapTiles刚好有一张zoom为4的成都瓦片
+    var center = [0, 0];
+    // console.log('center', center);
+    // var center = ol.proj.transform([104.06667, 30.66667], 'EPSG:4326', 'EPSG:3857');
+    // 计算熊猫基地地图映射到地图上的范围，图片像素为 550*344，保持比例的情况下，把分辨率放大一些
+    // var extent = [center[0]- 1920*1000/2, center[1]-1080*1000/2, center[0]+1920*1000/2, center[1]+1080*1000/2];
+    var extent = [-1920/2, -1080/2, +1920/2, +1080/2];
+
+    //创建地图
+    var map = new ol.Map({
+        view: new ol.View({
+            center: center,
+            extent: extent,
+            zoom: 17,
+            minZoom: 15,
+            maxZoom:18
+        }),
+        target: 'map'
+    });
+
+    // 加载熊猫基地静态地图层
+    map.addLayer(new ol.layer.Image({
+        source: new ol.source.ImageStatic({
+            url: 'images/1.jpg', // 熊猫基地地图
+            imageExtent: extent     // 映射到地图的范围
+        })
+    }));
+    // ********************* 抄的一个例子 好用 end ***********************
+
+
+
+    // ********************* 抄的第二个例子 做标记 s ***********************
+
+    var features = new ol.Collection();
+    var featureOverlay = new ol.layer.Vector({
+      source: new ol.source.Vector({features: features}),
+      style: new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: 'rgba(255, 255, 255, 0.2)'
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#ffcc33',
+          width: 2
+        }),
+        image: new ol.style.Circle({
+          radius: 7,
+          fill: new ol.style.Fill({
+            color: '#ffcc33'
+          })
+        })
+      })
+    });
+    featureOverlay.setMap(map);
+
+    var modify = new ol.interaction.Modify({
+      features: features,
+      // the SHIFT key must be pressed to delete vertices, so
+      // that new vertices can be drawn at the same position
+      // of existing vertices
+      deleteCondition: function(event) {
+        return ol.events.condition.shiftKeyOnly(event) &&
+            ol.events.condition.singleClick(event);
+      }
+    });
+    map.addInteraction(modify);
+
+    var draw; // global so we can remove it later
+    var typeSelect = document.getElementById('type');
+
+    function addInteraction() {
+      draw = new ol.interaction.Draw({
+        features: features,
+        type: /** @type {ol.geom.GeometryType} */ (typeSelect.value)
+      });
+      map.addInteraction(draw);
+    }
+
+
+    /**
+     * Handle change event.
+     */
+    typeSelect.onchange = function() {
+      map.removeInteraction(draw);
+      addInteraction();
+    };
+
+    addInteraction();
+
+    </script>
+    <!-- <script src="js/main.js" type="text/javascript"></script> -->
+  </body>
+</html>

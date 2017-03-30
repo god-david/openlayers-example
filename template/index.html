@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>OpenLayers example</title>
+    <link rel="stylesheet" href="css/ol.css" type="text/css">
+    <style>
+      .map {
+        height: 800px;
+        width: 100%;
+      }
+      #marker {
+       width: 20px;
+       height: 20px;
+       border: 1px solid #088;
+       border-radius: 10px;
+       background-color: #0FF;
+       opacity: 0.5;
+     }
+     .popover-content {
+       min-width: 180px;
+     }
+    </style>
+    <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <!-- <h2>
+      <a href="/1">My Map1</a>
+      <a href="/2">My Map2</a>
+      <a href="/3">My Map3</a>
+    </h2> -->
+    <form class="form-inline">
+      <label>Geometry type &nbsp;</label>
+      <select id="draw-type">
+        <option value="None">None</option>
+        <option value="Point">Point</option>
+        <option value="LineString">LineString</option>
+        <!-- <option value="LinearRing">LinearRing</option> -->
+        <option value="Polygon">Polygon</option>
+        <!-- <option value="MultiPolygon">MultiPolygon</option> -->
+        <option value="Circle">Circle</option>
+      </select>
+    </form>
+    <form class="form-inline">
+      <label>Action type &nbsp;</label>
+      <select id="select-type">
+        <option value="none" selected>None</option>
+        <option value="click">Click</option>
+      </select>
+      <span id="status">&nbsp;0 selected features</span>
+    </form>
+    <!-- <div class="">
+      <button class="btn" id="openAddInteraction" type="button" name="button">开启插件</button>
+      <button class="btn" id="closeAddInteraction" type="button" name="button">关闭插件</button>
+    </div> -->
+
+    <div id="map" class="map"></div>
+    <div style="display: none;">
+      <!-- Clickable label for Vienna -->
+      <a id="vienna" class="overlay" target="_blank" href="http://en.wikipedia.org/wiki/Vienna">Vienna</a>
+      <div id="marker" title="Marker"></div>
+      <!-- Popup -->
+      <div id="popup" title="Welcome to OpenLayers"></div>
+    </div>
+    <div>矢量地图Feature总数： <span id="count"></span></div>
+    <script src="build/ol-debug.js" type="text/javascript"></script>
+    <script src="js/main/interaction_5.js" charset="utf-8"></script>
+    <script src="js/main/init.js" charset="utf-8"></script>
+    <script src="js/main/draw_and_modify.js" charset="utf-8"></script>
+    <script src="js/main/addOverlay_position.js" charset="utf-8"></script>
+    <script src="js/main/select_and_pop.js" charset="utf-8"></script>
+    <script src="js/main/custom_interaction.js" charset="utf-8"></script>
+  </body>
+</html>
