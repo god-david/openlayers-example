@@ -38,11 +38,10 @@ var changeInteraction = function() {
           ' selected features (last operation selected ' + e.selected.length +
           ' and deselected ' + e.deselected.length + ' features)';
 
-
+          var element = popup.getElement();
           if (e.selected.length == 1) {
             // 被选中的 feature 个数为 1 的时候
             // 显示地图上的坐标
-            var element = popup.getElement();
             var coordinate = e.mapBrowserEvent.coordinate;
             console.log('coordinate', coordinate);
 
@@ -99,7 +98,7 @@ var changeInteraction = function() {
             $(element).popover('show');
 
           } else {
-            var element = popup.getElement();
+
             $(element).popover('destroy');
           }
     });

@@ -35,7 +35,6 @@ var listenerKey = featuresSource.on('change', function(){
 });
 
 
-
 // ***************** modify section **yi************************
 // var modify = new ol.interaction.Modify({
 //   features: features,
@@ -77,6 +76,7 @@ var drawendEvent = function(event) {
   console.log('drawendFeature', drawendFeature);
   // 取得这个 feature 的各项参数
   getFeaturesParameters(drawendFeature)
+  // 取得鼠标当前的坐标，目前暂时发现了这个方法
   var mousePosition = document.querySelector('.ol-mouse-position').innerText
   mousePosition = mousePosition.split(",")
   console.log('mousePosition', mousePosition);
