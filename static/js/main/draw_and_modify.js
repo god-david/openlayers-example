@@ -73,14 +73,13 @@ function addInteraction() {
 var drawendEvent = function(event) {
   // 先取得画出来的这个 feature
   var drawendFeature = event.feature
-  console.log('drawendFeature', drawendFeature);
-  // 取得这个 feature 的各项参数
-  getFeaturesParameters(drawendFeature)
+  // console.log('drawendFeature', drawendFeature);
   // 取得鼠标当前的坐标，目前暂时发现了这个方法
   var mousePosition = document.querySelector('.ol-mouse-position').innerText
   mousePosition = mousePosition.split(",")
-  console.log('mousePosition', mousePosition);
-  setmessage(mousePosition)
+  // console.log('mousePosition', mousePosition);
+  // 在鼠标位置弹出弹窗，请求输入信息
+  requestMessage(drawendFeature, mousePosition)
 }
 
 
@@ -94,38 +93,78 @@ var getFeaturesParameters = function(feature) {
     case 'Point':
       var coordinates = geometry.getCoordinates()
       console.log('selectedF geometry coordinates', coordinates);
-
+      return {type,coordinates}
       break;
     case 'LineString':
       var coordinates = geometry.getCoordinates()
       console.log('selectedF geometry coordinates', coordinates);
-
+      return {type,coordinates}
       break;
     case 'Polygon':
       var coordinates = geometry.getCoordinates()
       console.log('selectedF geometry coordinates', coordinates);
-
+      return {type,coordinates}
       break;
     case 'Circle':
       var center = geometry.getCenter()
       var radius = geometry.getRadius()
       console.log('center radius', center, radius);
+      return {type,center,radius}
       break;
     default:
   }
 }
 
+// 将 message 加入覆盖层
 var message = new ol.Overlay({
   element: document.getElementById('message')
 });
 map.addOverlay(message);
 
-var setmessage = function(coordinate) {
-  var $element = $('#message')
-  $element.popover('destroy');
-  message.setPosition(coordinate);
+
+var getInformation = function(parameters) {
+  // 得到用户填写的数据
+  var form = {
+    id: e('#message-id').value,
+    message: e('#message-message').value,
+    type: parameters.type,
+    coordinates: parameters.coordinates,
+    center: parameters.center,
+    radius: parameters.radius,
+  }
+  console.log('获取的form：', form)
+  return form
+}
+
+var saveMessage = function(form) {
+  console.log('form', form);
+  if (localStorage.messages == undefined) {
+    localStorage.messages = '{}'
+  }
+  var forms = JSON.parse(localStorage.messages)
+  let id = form.id
+  if (forms[id]) {
+    console.log('id 已经被占用，请换一个 id');
+    alert('id 已经被占用，请换一个 id')
+  } else {
+
+    forms[id] = form
+    console.log('forms', forms);
+    var forms = JSON.stringify(forms)
+    localStorage.messages = forms
+    // 弹窗关闭
+    $messageElement.popover('destroy');
+  }
+}
+
+
+var $messageElement = $('#message')
+var requestMessage = function(drawendFeature, mousePosition) {
+  // 弹窗初始化
+  $messageElement.popover('destroy');
+  message.setPosition(mousePosition);
   // the keys are quoted to prevent renaming in ADVANCED mode.
-  $element.popover({
+  $messageElement.popover({
     'placement': 'top',
     'animation': false,
     'html': true,
@@ -133,17 +172,27 @@ var setmessage = function(coordinate) {
       id: <input id="message-id" type="text" name="" value="">
       message: <input id="message-message" type="text" name="" value="">
       <button id="commit-message" type="button" name="button">保存</button>
+      <button id="cancel-message" type="button" name="button">取消</button>
     </p>`
   });
-  $element.popover('show');
-  $('#commit-message').one("click", function(){
-    $element.popover('destroy');
+  $messageElement.popover('show');
 
+  // 取得这个 feature 的各项参数
+  var parameters = getFeaturesParameters(drawendFeature)
+  console.log('parameters', parameters);
+
+
+  // 给输入弹窗绑定事件
+  $('#cancel-message').one("click", function(event){
+    $messageElement.popover('destroy');
+  });
+
+  $('#commit-message').one("click", function(event){
+    var form = getInformation(parameters)
+    drawendFeature.setId(form.id)
+    saveMessage(form)
   });
 }
-
-
-
 
 
 

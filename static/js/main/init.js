@@ -48,3 +48,6 @@
 
 
 // url: 'images/CMU-1_files/{z}/{x}_{y}.jpeg',
+var e = function(s) {
+  return document.querySelector(s)
+}
