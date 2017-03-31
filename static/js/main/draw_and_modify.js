@@ -25,6 +25,60 @@ var featureOverlay = new ol.layer.Vector({
 });
 featureOverlay.setMap(map);
 
+var newFeature = function(form) {
+  var f;
+  switch (form.type) {
+    case 'Point':
+      f = new ol.Feature({
+        geometry: new ol.geom.Point(form.coordinates),
+      })
+
+      break;
+    case 'LineString':
+      f = new ol.Feature({
+        geometry: new ol.geom.LineString(form.coordinates),
+      })
+
+      break;
+    case 'Polygon':
+      f = new ol.Feature({
+        geometry: new ol.geom.Polygon(form.coordinates),
+      })
+
+      break;
+    case 'Circle':
+      f = new ol.Feature({
+        geometry: new ol.geom.Circle(form.center, form.radius),
+      })
+
+      break;
+    default:
+  }
+  // console.log('f', f);
+  f.setId(form.id)
+  featuresSource.addFeature(f);
+}
+
+// 把当前已经存在的 features 加载进来
+var addFeatures = function() {
+  var forms = JSON.parse(localStorage.messages)
+  // console.log('forms', forms);
+  for (let k in forms) {
+    // console.log(k);
+    // console.log(forms[k]);
+    let form = forms[k]
+    newFeature(form)
+
+  }
+}
+addFeatures()
+
+
+
+
+
+
+
 // ****************监听地图上的 feature 数量
 var listenerKey = featuresSource.on('change', function(){
     if (featuresSource.getState() === 'ready') {    // 判定是否加载完成

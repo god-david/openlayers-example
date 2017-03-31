@@ -59,7 +59,7 @@
       <!-- <a id="vienna" class="overlay" target="_blank" href="http://en.wikipedia.org/wiki/Vienna">Vienna</a> -->
       <div id="marker" title="Marker"></div>
       <!-- Popup -->
-      <div id="popup" title="Welcome to OpenLayers"></div>
+      <div id="popup" title="此处信息展示"></div>
       <div id="message" title="请输入 id 和 描述"></div>
     </div>
     <div>矢量地图Feature总数： <span id="count"></span></div>
@@ -69,7 +69,10 @@
         <button type="button" name="button">保存</button>
         <button type="button" name="button">取消</button>
       </p>
-
+    </div>
+    <div class="">
+      <p>id: ${form.id}</p>
+      <p>message: ${form.message}</p>
     </div>
 
     <script src="build/ol-debug.js" type="text/javascript"></script>

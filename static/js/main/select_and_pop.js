@@ -55,6 +55,8 @@ var changeInteraction = function() {
         popMessage(selectedF, popupElement, coordinate)
       } else {
         $(popupElement).popover('destroy');
+        $messageElement.popover('destroy');
+
       }
     });
   }
@@ -63,10 +65,14 @@ var changeInteraction = function() {
 var popMessage = function(selectedF, popupElement, coordinate) {
   let id = selectedF.getId()
   console.log('id', id);
-  if (id == undefined) {
+  if (id == undefined || id == '') {
+    // 如果 id 不存在，则需要输入 id
     requestMessage(selectedF, coordinate)
   } else {
-    // displayMessage()
+    // 如果 id 存在，则弹出给定内容
+    var forms = JSON.parse(localStorage.messages)
+    var form = forms[id]
+    // displayMessage(id)
     // console.log('selectedF geometry getProperties', coordinates);
     // console.log('selectedF geometry getLayout', geometry.getLayout());
     $(popupElement).popover('destroy');
@@ -76,11 +82,23 @@ var popMessage = function(selectedF, popupElement, coordinate) {
       'placement': 'top',
       'animation': false,
       'html': true,
-      'content': '<p>The location you clicked was:</p><code>' + coordinate + '</code>'
+      'content': `
+        <p>id: ${form.id}</p>
+        <p>id: ${form.message}</p>
+      `
+      // '<p>The location you clicked was:</p><code>' + coordinate + '</code>'
     });
     $(popupElement).popover('show');
   }
 }
+
+
+
+
+
+
+
+
 /**
  * onchange callback on the select element.
  */
